@@ -11,6 +11,11 @@ spec:
     targetRevision: 29.3.14
     helm:
       values: |
+        image:
+          registry: docker.io
+          repository: bitnamilegacy/kafka
+          tag: 3.7.1-debian-12-r4
+
         # Kafka (dev/lab) - single node, KRaft, no ZooKeeper
         kraft:
           enabled: true

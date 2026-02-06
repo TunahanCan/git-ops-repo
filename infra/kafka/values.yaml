@@ -1,4 +1,3 @@
-# Kafka (dev/lab) - single node, KRaft, no ZooKeeper
 kraft:
   enabled: true
 
