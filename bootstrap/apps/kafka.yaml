@@ -10,8 +10,53 @@ spec:
     chart: kafka
     targetRevision: 29.3.14
     helm:
-      valueFiles:
-        - infra/kafka/values.yaml
+      values: |
+        # Kafka (dev/lab) - single node, KRaft, no ZooKeeper
+        kraft:
+          enabled: true
+
+        zookeeper:
+          enabled: false
+
+        controller:
+          replicaCount: 1
+
+        broker:
+          replicaCount: 1
+
+        # k3s local-path storage kullan
+        global:
+          storageClass: local-path
+
+        persistence:
+          enabled: true
+          size: 5Gi
+
+        # Lab için basit (auth kapalı)
+        auth:
+          clientProtocol: plaintext
+          interBrokerProtocol: plaintext
+          sasl:
+            enabled: false
+        tls:
+          enabled: false
+
+        # Tek broker olduğu için replication ayarlarını 1 yapalım
+        extraConfig:
+          offsets.topic.replication.factor: "1"
+          transaction.state.log.replication.factor: "1"
+          transaction.state.log.min.isr: "1"
+          default.replication.factor: "1"
+          min.insync.replicas: "1"
+
+        # Kaynakları makul tut (istersen sonra arttırırız)
+        resources:
+          requests:
+            cpu: 250m
+            memory: 1Gi
+          limits:
+            cpu: 1
+            memory: 2Gi
   destination:
     server: https://kubernetes.default.svc
     namespace: infra
