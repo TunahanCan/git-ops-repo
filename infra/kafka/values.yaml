@@ -1,3 +1,8 @@
+image:
+  registry: docker.io
+  repository: bitnamilegacy/kafka
+  tag: 3.7.1-debian-12-r4
+
 kraft:
   enabled: true
 
