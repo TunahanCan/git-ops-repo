@@ -10,7 +10,6 @@ controller:
 broker:
   replicaCount: 1
 
-# k3s local-path storage kullan
 global:
   storageClass: local-path
 
@@ -18,7 +17,6 @@ persistence:
   enabled: true
   size: 5Gi
 
-# Lab için basit (auth kapalı)
 auth:
   clientProtocol: plaintext
   interBrokerProtocol: plaintext
@@ -27,7 +25,6 @@ auth:
 tls:
   enabled: false
 
-# Tek broker olduğu için replication ayarlarını 1 yapalım
 extraConfig:
   offsets.topic.replication.factor: 1
   transaction.state.log.replication.factor: 1
@@ -35,7 +32,6 @@ extraConfig:
   default.replication.factor: 1
   min.insync.replicas: 1
 
-# Kaynakları makul tut (istersen sonra arttırırız)
 resources:
   requests:
     cpu: 250m
