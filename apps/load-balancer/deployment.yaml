@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: load-balancer
+  namespace: apps
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: load-balancer
+  template:
+    metadata:
+      labels:
+        app: load-balancer
+    spec:
+      containers:
+        - name: load-balancer
+          image: ghcr.io/tunahancan/load-balancer:BOOTSTRAP
+          ports:
+            - name: lb
+              containerPort: 12000
+            - name: backend
+              containerPort: 11211
+          env:
+            - name: APP_LOAD_BALANCER_ENABLED
+              value: "true"
+            - name: APP_LOAD_BALANCER_HOST
+              value: "0.0.0.0"
+            - name: APP_LOAD_BALANCER_PORT
+              value: "12000"
+            - name: APP_LOAD_BALANCER_BACKLOG
+              value: "128"
+            - name: APP_LOAD_BALANCER_CONNECT_TIMEOUT_MILLIS
+              value: "3000"
+
+            # K8s'te multicast zor; static node listesi kullan.
+            # ŞİMDİLİK placeholder: bunu senin can-cache servis adına göre değiştireceğiz.
+            - name: APP_LOAD_BALANCER_STATIC_NODES
+              value: "can-cache.apps.svc.cluster.local:11211"
+
+            - name: APP_NETWORK_AGREEMENT_PACK_MESSAGE
+              value: "HELLO"
+
+            # Eğer uygulaman gerçekten 11211 dinleyip servis ediyorsa kalsın.
+            - name: APP_NETWORK_HOST
+              value: "0.0.0.0"
+            - name: APP_NETWORK_PORT
+              value: "11211"
