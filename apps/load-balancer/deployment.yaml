@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: load-balancer
-          image: ghcr.io/tunahancan/load-balancer:BOOTSTRAP
+          image: ghcr.io/tunahancan/load-balancer:latest
           ports:
             - name: tcp
               containerPort: 12000
