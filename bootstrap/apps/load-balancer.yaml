@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/TunahanCan/git-ops-repo.git
+    repoURL: https://github.com/TunahanCan/load-balancer.git
     targetRevision: main
     path: apps/load-balancer
   destination:
