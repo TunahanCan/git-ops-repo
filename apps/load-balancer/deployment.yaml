@@ -4,7 +4,7 @@ metadata:
   name: load-balancer
   namespace: apps
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: load-balancer
@@ -17,32 +17,20 @@ spec:
         - name: load-balancer
           image: ghcr.io/tunahancan/load-balancer:BOOTSTRAP
           ports:
-            - name: lb
+            - name: tcp
               containerPort: 12000
-            - name: backend
-              containerPort: 11211
-          env:
-            - name: APP_LOAD_BALANCER_ENABLED
-              value: "true"
-            - name: APP_LOAD_BALANCER_HOST
-              value: "0.0.0.0"
-            - name: APP_LOAD_BALANCER_PORT
-              value: "12000"
-            - name: APP_LOAD_BALANCER_BACKLOG
-              value: "128"
-            - name: APP_LOAD_BALANCER_CONNECT_TIMEOUT_MILLIS
-              value: "3000"
-
-            # K8s'te multicast zor; static node listesi kullan.
-            # ŞİMDİLİK placeholder: bunu senin can-cache servis adına göre değiştireceğiz.
-            - name: APP_LOAD_BALANCER_STATIC_NODES
-              value: "can-cache.apps.svc.cluster.local:11211"
-
-            - name: APP_NETWORK_AGREEMENT_PACK_MESSAGE
-              value: "HELLO"
-
-            # Eğer uygulaman gerçekten 11211 dinleyip servis ediyorsa kalsın.
-            - name: APP_NETWORK_HOST
-              value: "0.0.0.0"
-            - name: APP_NETWORK_PORT
-              value: "11211"
+          volumeMounts:
+            - name: config
+              mountPath: /etc/load-balancer
+              readOnly: true
+          # Eğer program config path env ile seçiyorsa ekleriz:
+          # env:
+          #   - name: CONFIG_PATH
+          #     value: /etc/load-balancer/application.properties
+      volumes:
+        - name: config
+          configMap:
+            name: load-balancer-config
+            items:
+              - key: application.properties
+                path: application.properties
