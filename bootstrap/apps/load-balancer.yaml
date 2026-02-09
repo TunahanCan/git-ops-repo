@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/TunahanCan/load-balancer.git
-    targetRevision: main
+    targetRevision: master
     path: apps/load-balancer
   destination:
     server: https://kubernetes.default.svc
