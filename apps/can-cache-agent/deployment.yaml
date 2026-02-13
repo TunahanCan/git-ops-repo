@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: can-cache-agent
+  namespace: apps
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: can-cache-agent
+  template:
+    metadata:
+      labels:
+        app: can-cache-agent
+    spec:
+      containers:
+        - name: can-cache-agent
+          image: ghcr.io/tunahancan/can-cache-agent
+          imagePullPolicy: Always
