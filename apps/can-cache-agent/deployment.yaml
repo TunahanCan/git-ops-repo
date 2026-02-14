@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: can-cache-agent
+  namespace: apps
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: can-cache-agent
+  template:
+    metadata:
+      labels:
+        app: can-cache-agent
+    spec:
+      containers:
+        - name: can-cache-agent
+          image: ghcr.io/tunahancan/can-cache-agent:latest
+          imagePullPolicy: Always
+          ports:
+            - name: tcp
+              containerPort: 11211
+          env:
+            - name: AGENT_LISTEN_HOST
+              value: "0.0.0.0"
+            - name: AGENT_LISTEN_PORT
+              value: "11211"
+            # discovery DNS (headless service) — README’deki mantıkla uyumlu
+            - name: AGENT_DISCOVERY_DNS
+              value: "can-cache-agent-headless.apps.svc.cluster.local"
