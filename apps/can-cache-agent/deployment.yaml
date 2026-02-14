@@ -25,6 +25,5 @@ spec:
               value: "0.0.0.0"
             - name: AGENT_LISTEN_PORT
               value: "11211"
-            # discovery DNS (headless service) — README’deki mantıkla uyumlu
             - name: AGENT_DISCOVERY_DNS
               value: "can-cache-agent-headless.apps.svc.cluster.local"
